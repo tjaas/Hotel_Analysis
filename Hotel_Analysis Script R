@@ -1,0 +1,43 @@
+library(data.table)   #import data
+library(tidyverse)    #tidy data, visualisation, transformation
+library(tibble)       #create tibbles
+library(plotrix)      #3D Exploded Pie Chart
+library(tidyr)        #tidy data
+library(dplyr)        #data analysis
+library(DT)           #display data set
+library(ggplot2)      #data visualization
+library(magrittr)     #pipe oprator
+library(knitr)        #display tables
+
+hotels <- read.csv("hotels.csv")
+View(hotels)
+
+str(hotels)
+
+## Preparation
+#Check for missing value in database
+colSums(is.na(hotels))
+
+#Is missing 4 values in the children column
+
+## Cleaning
+#Resolve the missing values in children column
+#We replace the na values for the median of this variable. Sample is large so is apropriated.
+
+hotels$children[is.na(hotels$children)] <- mean(hotels$children, na.rm = TRUE)
+
+#Undefined" and "SC" means that the guests didn't eat at the hotel.
+n_distinct(hotels$meal)
+unique(hotels$meal)
+View(hotels$meal)
+
+hotels$meal <- as.factor(hotels$meal) #changed for char to factor
+
+levels(hotels$meal) <- c("BB", "HB", "FB", "SC", "SC") #changed levels of vector
+
+#"is_canceled" and "is_repeated_guests" are int. Changed to factor
+hotels$is_canceled <- as.factor(hotels$is_canceled)
+hotels$is_repeated_guest <- as.factor(hotels$is_repeated_guest)
+
+##Statistical Summary
+summary(hotels)
